@@ -21,11 +21,29 @@
  * internal representation; do not build and store strings of text for output.
  */
 
+/* ASSUMPTIONS ABOUT PRINT ARGUMENTS!!!!
+ * - Values are always positive
+ * - There is always a value1 if there is a value2
+ */
+
 #ifndef PRINTER_H
 #define PRINTER_H
 
+#include <vector>
+
 _Monitor Printer {
+    struct BufferSlot {
+        BufferSlot() : state('\0'), arg1(-1), arg2(-1) {}
+        char state;
+        int arg1, arg2;
+    };
+
     unsigned int num_students, num_machines, num_couriers;
+    std::vector<BufferSlot> buffer;
+    void realPrint(unsigned int id, char state, int value1, int value2);
+    void clearSlot(int id);
+    void flush();
+
   public:
     enum Kind { Parent, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };
     Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers );
@@ -35,11 +53,6 @@ _Monitor Printer {
     void print( Kind kind, unsigned int lid, char state );
     void print( Kind kind, unsigned int lid, char state, int value1 );
     void print( Kind kind, unsigned int lid, char state, int value1, int value2 );
-};
-
-_Monitor TestPrinter : public Printer {
-    TestPrinter();
-    void print(const char *s);
 };
 
 #endif

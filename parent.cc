@@ -15,6 +15,8 @@ extern MPRNG mprng;
 Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay) : prt(prt), b(bank) {
     num_students = numStudents;
     delay = parentalDelay;
+
+    prt.print(Printer::Parent, 'S');
 }
 
 Parent::~Parent() {}
@@ -37,6 +39,7 @@ void Parent::main() {
 
             // Deposit gift with student
             b.deposit(child, gift);
+            prt.print(Printer::Parent, 'D', child, gift);
         }
     }
 }
