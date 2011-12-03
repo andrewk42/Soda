@@ -24,8 +24,6 @@
 :tabnew plant.cc
 :tabnew truck.h
 :tabnew truck.cc
-:tabnew courier.h
-:tabnew courier.cc
 :tabnew printer.h
 :tabnew printer.cc
 :tabnew PRNG.h
