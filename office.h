@@ -30,6 +30,14 @@
  * C        creation rendezvous complete    student id, transfer amount
  * T        transfer rendezvous complete    student id, transfer amount
  * F        finished
+ *
+ * A courier prints the following information:
+ * State    Meaning                         Additional Information
+ * -----    -------                         ----------------------
+ * S        starting
+ * t        start funds transfer            student requesting transfer, amount of transfer
+ * T        complete funds transfer         student requesting transfer, amount of transfer
+ * F        finished
  */
 
 #ifndef OFFICE_H
