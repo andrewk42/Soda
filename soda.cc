@@ -15,6 +15,8 @@
 #include "printer.h"
 #include "bank.h"
 #include "parent.h"
+#include "office.h"
+#include "nameserver.h"
 
 using namespace std;
 
@@ -106,19 +108,24 @@ void uMain::main() {
     Parent *par = new Parent(*prt, *b, cfg.numStudents, cfg.parentalDelay);
 
     // Create the Office (the office creates the Couriers)
-
+    WATCardOffice *office = new WATCardOffice(*prt, *b, cfg.numCouriers);
 
     // Create the Name Server
-
+    NameServer *nameServer = new NameServer(*prt, cfg.numVendingMachines, cfg.numStudents);
 
     // Create the Machines
-
+    for (int id = 0; id < cfg.numVendingMachines; id++) {
+      VendingMachine *machine = new VendingMachine(*prt, *nameServer, id, cfg.sodaCost, cfg.maxStockPerFlavour); 
+    }
 
     // Create the Plant (the plant creates the Truck)
 
 
     // Create the Students
-
+    //for (int i = 0; i < cfg.numStudents; i++) {
+    //  Student *student = new Student(*prt, &nameServer, WATCardOffice &cardOffice, unsigned int id,
+    //         unsigned int maxPurchases)
+    //}
 
     // Terminate once all students are finished
 

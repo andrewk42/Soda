@@ -7,3 +7,6 @@
  */
 
 #include "office.h"
+
+WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) : prt(prt), b(bank) {
+}

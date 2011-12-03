@@ -7,3 +7,6 @@
  */
 
 #include "nameserver.h"
+
+NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ) {
+}

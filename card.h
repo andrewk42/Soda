@@ -16,9 +16,12 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <uFuture.h>
+
 class WATCard {
     WATCard( const WATCard & );			// prevent copying
     WATCard &operator=( const WATCard & );
+    unsigned int balance; // In dollars
   public:
     WATCard();
     void deposit( unsigned int amount );

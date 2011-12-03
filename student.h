@@ -41,6 +41,10 @@
 #define STUDENT_H
 
 _Task Student {
+    Printer &prt;
+    NameServer &nameServer;
+    WATCardOffice &office;
+    unsigned int id, maxPurchases;
     void main();
   public:
     Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id,

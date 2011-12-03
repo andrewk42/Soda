@@ -31,6 +31,10 @@
 #ifndef NAMESERVER_H
 #define NAMESERVER_H
 
+#include "machine.h"
+
+_Task VendingMachine;
+
 _Task NameServer {
     void main();
   public:

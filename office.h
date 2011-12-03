@@ -43,13 +43,20 @@
 #ifndef OFFICE_H
 #define OFFICE_H
 
+#include <uC++.h>
+#include <uFuture.h>
+#include "card.h"
+#include "printer.h"
+#include "bank.h"
+
 _Task WATCardOffice {
     struct Job {				    // marshalled arguments and return future
+      struct Args{};
 	    Args args;				    // call arguments (YOU DEFINE "Args")
 	    FWATCard result;			// return future
 	    Job( Args args ) : args( args ) {}
     };
-    _Task Courier { ... };			// communicates with bank
+    _Task Courier { };			// communicates with bank
     Printer &prt;
     Bank &b;
     unsigned int num_couriers;
@@ -62,5 +69,7 @@ _Task WATCardOffice {
     FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
     Job *requestWork();
 };
+
+
 
 #endif
