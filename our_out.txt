@@ -1,0 +1,3 @@
+Parent	WATOff	Names	Truck	Plant	Stud:0	Stud:1	Stud:2	Stud:3	Mach:0	Mach:1	Mach:2	Cour:0	Cour:1	Cour:2
+*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******
+end of main
