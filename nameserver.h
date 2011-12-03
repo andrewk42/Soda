@@ -31,7 +31,9 @@
 #ifndef NAMESERVER_H
 #define NAMESERVER_H
 
+#include <uC++.h>
 #include "machine.h"
+#include "printer.h"
 
 _Task VendingMachine;
 

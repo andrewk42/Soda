@@ -16,6 +16,7 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <uC++.h>
 #include <uFuture.h>
 
 class WATCard {

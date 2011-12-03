@@ -10,3 +10,5 @@
 
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ) {
 }
+
+void NameServer::main() {}

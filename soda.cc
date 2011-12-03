@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
+#include <vector>
 #include "mprng.h"
 #include "config.h"
 #include "printer.h"
@@ -17,6 +18,7 @@
 #include "parent.h"
 #include "office.h"
 #include "nameserver.h"
+#include "machine.h"
 
 using namespace std;
 
@@ -24,6 +26,10 @@ using namespace std;
 _Monitor Printer;
 _Monitor Bank;
 _Task Parent;
+_Task WATCardOffice;
+_Task NameServer;
+_Task VendingMachine;
+
 
 /* The random-number generator is the only permitted global variable.
  * All 1 in N chance rolls are generated using (mprng(N-1) == 0) */
@@ -114,8 +120,10 @@ void uMain::main() {
     NameServer *nameServer = new NameServer(*prt, cfg.numVendingMachines, cfg.numStudents);
 
     // Create the Machines
-    for (int id = 0; id < cfg.numVendingMachines; id++) {
-      VendingMachine *machine = new VendingMachine(*prt, *nameServer, id, cfg.sodaCost, cfg.maxStockPerFlavour); 
+    vector<VendingMachine*> machines;
+
+    for (unsigned int id = 0; id < cfg.numVendingMachines; id++) {
+        machines.push_back(new VendingMachine(*prt, *nameServer, id, cfg.sodaCost, cfg.maxStockPerFlavour));
     }
 
     // Create the Plant (the plant creates the Truck)
@@ -134,13 +142,15 @@ void uMain::main() {
 
 
     // Delete the Machines
-
+    for (unsigned int i = 0; i < machines.size(); i++) {
+        delete machines[i];
+    }
 
     // Delete the Name Server
-
+    delete nameServer;
 
     // Delete the Office
-
+    delete office;
 
     // Delete the Parent
     delete par;

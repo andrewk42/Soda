@@ -43,18 +43,16 @@
 #ifndef OFFICE_H
 #define OFFICE_H
 
-#include <uC++.h>
-#include <uFuture.h>
 #include "card.h"
 #include "printer.h"
 #include "bank.h"
 
 _Task WATCardOffice {
     struct Job {				    // marshalled arguments and return future
-      struct Args{};
-	    Args args;				    // call arguments (YOU DEFINE "Args")
-	    FWATCard result;			// return future
-	    Job( Args args ) : args( args ) {}
+        struct Args{};
+        Args args;				    // call arguments (YOU DEFINE "Args")
+        FWATCard result;			// return future
+        Job( Args args ) : args( args ) {}
     };
     _Task Courier { };			// communicates with bank
     Printer &prt;
