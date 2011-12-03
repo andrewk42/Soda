@@ -40,6 +40,12 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#include <uC++.h>
+#include "printer.h"
+#include "nameserver.h"
+#include "office.h"
+#include "card.h"
+
 _Task Student {
     Printer &prt;
     NameServer &nameServer;

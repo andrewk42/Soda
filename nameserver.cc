@@ -11,4 +11,6 @@
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ) {
 }
 
+VendingMachine* NameServer::getMachine(unsigned int) { return NULL; }
+
 void NameServer::main() {}

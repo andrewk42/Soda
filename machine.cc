@@ -12,4 +12,6 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
                     unsigned int maxStockPerFlavour ) {
 }
 
+VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours, WATCard&) { return BUY; }
+
 void VendingMachine::main() {}

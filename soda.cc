@@ -19,6 +19,7 @@
 #include "office.h"
 #include "nameserver.h"
 #include "machine.h"
+#include "student.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ _Task Parent;
 _Task WATCardOffice;
 _Task NameServer;
 _Task VendingMachine;
-
+_Task Student;
 
 /* The random-number generator is the only permitted global variable.
  * All 1 in N chance rolls are generated using (mprng(N-1) == 0) */
@@ -130,13 +131,16 @@ void uMain::main() {
 
 
     // Create the Students
-    //for (int i = 0; i < cfg.numStudents; i++) {
-    //  Student *student = new Student(*prt, &nameServer, WATCardOffice &cardOffice, unsigned int id,
-    //         unsigned int maxPurchases)
-    //}
+    vector<Student*> students;
+
+    for (unsigned int i = 0; i < cfg.numStudents; i++) {
+        students.push_back(new Student(*prt, *nameServer, *office, i, cfg.maxPurchases));
+    }
 
     // Terminate once all students are finished
-
+    for (unsigned int i = 0; i < students.size(); i++) {
+        delete students[i];
+    }
 
     // Delete the Plant
 

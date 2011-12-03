@@ -11,4 +11,6 @@
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) : prt(prt), b(bank) {
 }
 
+FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount, WATCard *&card ) { return NULL; }
+
 void WATCardOffice::main() {}

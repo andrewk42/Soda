@@ -47,7 +47,7 @@ _Task NameServer;
 _Task VendingMachine {
     void main();
   public:
-    enum Flavours { PINK }; 			// flavours of soda (YOU DEFINE)
+    enum Flavours { PINK, ORGANGE, GREEN, BLUE }; 			// flavours of soda (YOU DEFINE)
     enum Status { BUY, STOCK, FUNDS };		// purchase status: successful buy, out of stock, insufficient funds
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
