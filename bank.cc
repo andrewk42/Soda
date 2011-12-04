@@ -20,6 +20,7 @@ Bank::Bank(unsigned int numStudents) : num_students(numStudents) {
 
 Bank::~Bank() {
     delete accounts;
+    delete[] withdraw_queues;
 }
 
 void Bank::deposit(unsigned int id, unsigned int amount) {
