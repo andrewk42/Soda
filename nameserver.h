@@ -32,7 +32,6 @@
 #define NAMESERVER_H
 
 #include <uC++.h>
-#include <vector>
 #include "printer.h"
 #include "machine.h"
 
@@ -41,12 +40,19 @@ _Task VendingMachine;
 _Task NameServer {
     Printer &prt;
 
+    unsigned int numVendingMachines, numStudents;
+
+    // Used to communicate with main()
     // currStudent is the student that called getMachine.
-    unsigned int numVendingMachines, numStudents, currStudent;
+    // next is the next machine for currStudent.
+    unsigned int currStudent, next;
+
+    // Used for registering.
+    unsigned int currMachine;
 
     // Used to keep track of which machine a student goes to next.
-    std::vector<VendingMachine*> machines;
-    int *nextMachine;
+    VendingMachine **machines;
+    unsigned int *nextMachine;
 
     void main();
   public:

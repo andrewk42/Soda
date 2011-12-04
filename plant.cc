@@ -21,3 +21,7 @@ void BottlingPlant::main() {
 
     prt.print(Printer::BottlingPlant, 'F');
 }
+
+bool BottlingPlant::getShipment(unsigned int cargo[]) {
+    return false;
+}

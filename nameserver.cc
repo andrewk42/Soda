@@ -15,11 +15,13 @@ NameServer::NameServer( Printer &prt, unsigned int numVMs, unsigned int sNum ) :
     numVendingMachines = numVMs;
     numStudents = sNum;
 
-    nextMachine = new int[numStudents];
+    machines = new VendingMachine *[numVendingMachines];
+    currMachine = 0;
+
+    nextMachine = new unsigned int[numStudents];
     for (unsigned int i = 0; i < numStudents; i++) {
-        nextMachine[i] = i;
+        nextMachine[i] = i % numVendingMachines;
     }
-    prt.print(Printer::NameServer, 'S');
 }
 
 NameServer::~NameServer() {}
@@ -28,32 +30,34 @@ void NameServer::VMregister( VendingMachine *machine ) {
     // Ensure non-null pointer
     assert(machine != NULL);
 
-    prt.print(Printer::NameServer, 'R', machines.size());
-    machines.push_back(machine);
+    prt.print(Printer::NameServer, 'R', currMachine);
+    machines[currMachine++] = machine;
 }
 
 VendingMachine *NameServer::getMachine(unsigned int sid) { 
-    currStudent = sid;
-
     // Ensure reasonable value
     assert(nextMachine[sid] >= 0 && nextMachine[sid] < numVendingMachines);
 
-    int next = nextMachine[sid];
-    prt.print(Printer::NameServer, 'N', sid, next);
-    prt.print(Printer::Student, sid, 'V', next);
-    nextMachine[currStudent] = (nextMachine[currStudent]+1) % numVendingMachines;
+    currStudent = sid;
+    next = nextMachine[sid];
     return machines[next]; 
 }
 
+VendingMachine **NameServer::getMachineList() {
+    return NULL;
+}
+
 void NameServer::main() {
-    /*
+    prt.print(Printer::NameServer, 'S');
     for (;;) {
-        _Accept(~NameServer) 
+        _Accept(~NameServer) {
             break;
-        or _When (machines.size() != numVendingMachines) _Accept(VMregister) { }
-        or _When (machines.size() == numVendingMachines) _Accept(getMachine) { 
-            nextMachine[currStudent] = nextMachine[currStudent]++ % numVendingMachines;
+        } or _When (currMachine != numVendingMachines) _Accept(VMregister) {
+        } or _When (currMachine == numVendingMachines) _Accept(getMachine) {
+            prt.print(Printer::NameServer, 'N', currStudent, next);
+            prt.print(Printer::Student, currStudent, 'V', next);
+            nextMachine[currStudent] = (nextMachine[currStudent]+1) % numVendingMachines;
         }
     }
-    */
+    prt.print(Printer::NameServer, 'F');
 }
