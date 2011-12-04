@@ -24,7 +24,21 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 }
 
 WATCardOffice::~WATCardOffice() {
-    for (unsigned int i = 0; i < couriers.size(); i++) {
+    unsigned int i;
+    Job *j;
+
+    // Signal each Courier to die
+    for (i = 0; i < couriers.size(); i++) {
+        j = new Job(Job::Args(0, 0, NULL));
+        j->terminate = true;
+
+        requests.push(j);
+
+        _Accept(requestWork);
+    }
+
+    // Wait for each Courier to actually die
+    for (i = 0; i < couriers.size(); i++) {
         delete couriers[i];
     }
 }
@@ -119,34 +133,36 @@ void WATCardOffice::Courier::main() {
     prt.print(Printer::Courier, id, 'S');
 
     for (;;) {
-        _Accept(~Courier) {
-            break;
+        // Get the next queued job
+        j = office.requestWork();
+
+        // Detect signal from office to break
+        if (j->terminate) break;
+
+        prt.print(Printer::Courier, id, 't', j->args.sid, j->args.amount);
+
+        // Withdraw money from the bank, may block here
+        b.withdraw(j->args.sid, j->args.amount);
+
+        // Update the WATCard with money obtained from Bank
+        j->args.c->deposit(j->args.amount);
+
+        // Potentially lose the WATCard
+        if (mprng(5) == 0) {
+            // Put the exception in the future
+            j->result.exception(new WATCardOffice::Lost());
         } else {
-            // Get the next queued job
-            j = office.requestWork();
-
-            prt.print(Printer::Courier, id, 't', j->args.sid, j->args.amount);
-
-            // Withdraw money from the bank, may block here
-            b.withdraw(j->args.sid, j->args.amount);
-
-            // Update the WATCard with money obtained from Bank
-            j->args.c->deposit(j->args.amount);
-
-            // Potentially lose the WATCard
-            if (mprng(5) == 0) {
-                // Put the exception in the future
-                j->result.exception(new WATCardOffice::Lost());
-            } else {
-                // Else put the card in the future
-                j->result.delivery(j->args.c);
-            }
-
-            prt.print(Printer::Courier, id, 'T', j->args.sid, j->args.amount);
-
-            delete j;
+            // Else put the card in the future
+            j->result.delivery(j->args.c);
         }
+
+        prt.print(Printer::Courier, id, 'T', j->args.sid, j->args.amount);
+
+        delete j;
     }
+
+    // Delete the terminate job
+    delete j;
 
     // Print finish msg
     prt.print(Printer::Courier, id, 'F');
