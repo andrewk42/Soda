@@ -27,7 +27,7 @@ void Student::main() {
 	
     // Create watcard w/ $5 balance.
     WATCard *card = new WATCard();
-    FWATCard watcard = office.create( id, (unsigned int)5, card );
+    FWATCard watcard = office.create( id, (unsigned int)20, card );
   
     // Obtain vending machine location from name server.
     VendingMachine *vm = nameServer.getMachine(id);
@@ -43,7 +43,7 @@ void Student::main() {
                 prt.print(Printer::Student, id, 'L');
                 delete card;
                 card = new WATCard();
-                watcard = office.create( id, (unsigned int)5, card );
+                watcard = office.create( id, (unsigned int)20, card );
                 continue; 
             }
             if (status == VendingMachine::BUY) {

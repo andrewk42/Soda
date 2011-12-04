@@ -70,7 +70,8 @@ _Task WATCardOffice {
 
         Args args;				    // call arguments (YOU DEFINE "Args")
         FWATCard result;			// return future
-        Job( Args args ) : args( args ) {}
+        bool terminate;             // for signalling Couriers to terminate
+        Job( Args args ) : args( args ) { terminate = false; }
     };
 
     // Worker Task
