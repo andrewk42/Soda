@@ -42,4 +42,6 @@ void Parent::main() {
             prt.print(Printer::Parent, 'D', child, gift);
         }
     }
+
+    prt.print(Printer::Parent, 'F');
 }

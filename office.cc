@@ -7,10 +7,17 @@
  */
 
 #include "office.h"
+#include "mprng.h"
+
+extern MPRNG mprng;
+
+/*****************************************************************************
+ * WATCardOffice
+ ****************************************************************************/
 
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) : prt(prt), b(bank) {
     for (unsigned int i = 0; i < numCouriers; i++) {
-        couriers.push_back(new Courier(prt, bank, *this));
+        couriers.push_back(new Courier(i, prt, bank, *this));
     }
 }
 
@@ -27,9 +34,7 @@ void WATCardOffice::main() {
         _Accept(~WATCardOffice) {
             break;
         } or _When (!requests.empty()) _Accept(requestWork) {
-
-        } else {
-
+        } or _Accept(create) {
         }
     }
 
@@ -62,9 +67,17 @@ WATCardOffice::Job* WATCardOffice::requestWork() {
     return j;
 }
 
+
+/*****************************************************************************
+ * Courier
+ ****************************************************************************/
+
+WATCardOffice::Courier::Courier(unsigned int id, Printer &prt, Bank &b, WATCardOffice &office) :
+    id(id), prt(prt), b(b), office(office) {}
+
 void WATCardOffice::Courier::main() {
     // Print start msg
-    prt.print(Printer::Courier, 'S');
+    prt.print(Printer::Courier, id, 'S');
 
     for (;;) {
         _Accept(~Courier) {
@@ -73,14 +86,29 @@ void WATCardOffice::Courier::main() {
             // Get the next queued job
             j = office.requestWork();
 
+            prt.print(Printer::Courier, id, 't');
+
             // Withdraw money from the bank, may block here
             b.withdraw(j->args.sid, j->args.amount);
 
             // Update the WATCard with money obtained from Bank
             j->args.c->deposit(j->args.amount);
+
+            // Potentially lose the WATCard
+            if (mprng(5) == 0) {
+                // Put the exception in the future
+                j->result.exception(new WATCardOffice::Lost());
+            } else {
+                // Else put the card in the future
+                j->result.delivery(j->args.c);
+            }
+
+            prt.print(Printer::Courier, id, 'T');
+
+            delete j;
         }
     }
 
     // Print finish msg
-    prt.print(Printer::Courier, 'F');
+    prt.print(Printer::Courier, id, 'F');
 }
