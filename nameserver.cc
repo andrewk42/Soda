@@ -44,7 +44,7 @@ VendingMachine *NameServer::getMachine(unsigned int sid) {
 }
 
 VendingMachine **NameServer::getMachineList() {
-    return NULL;
+    return machines;
 }
 
 void NameServer::main() {
