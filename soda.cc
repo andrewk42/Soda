@@ -166,5 +166,5 @@ void uMain::main() {
     // Delete the Printer
     delete prt;
 
-    cout << "end of main" << endl;
+    cout << "***********************" << endl;
 }
