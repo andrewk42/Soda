@@ -50,7 +50,7 @@ void Student::main() {
                 prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
                 break;
             } else if (status == VendingMachine::FUNDS) {
-                // transfer money.
+                //watcard = office.transfer( id, (unsigned int)5+, card);
             } else if (status == VendingMachine::STOCK) {
                 vm = nameServer.getMachine(id);
             }
