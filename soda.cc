@@ -20,6 +20,7 @@
 #include "nameserver.h"
 #include "machine.h"
 #include "student.h"
+#include "plant.h"
 
 using namespace std;
 

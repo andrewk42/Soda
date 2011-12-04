@@ -6,6 +6,7 @@
  * November 2011
  */
 
+#include <cassert>
 #include "office.h"
 #include "mprng.h"
 
@@ -16,6 +17,7 @@ extern MPRNG mprng;
  ****************************************************************************/
 
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) : prt(prt), b(bank) {
+    // Create each courier task
     for (unsigned int i = 0; i < numCouriers; i++) {
         couriers.push_back(new Courier(i, prt, bank, *this));
     }
@@ -38,11 +40,23 @@ void WATCardOffice::main() {
         } or _When (!requests.empty()) _Accept(requestWork) {
             prt.print(Printer::WATCardOffice, 'W');
         } or _Accept(create) {
+            // Ensure non-empty queue
+            assert(requests.size() > 0);
+
+            // Ensure non-null pointer
+            assert(requests.front() != NULL);
+
             id = requests.front()->args.sid;
             amount = requests.front()->args.amount;
 
             prt.print(Printer::WATCardOffice, 'C', id, amount);
         } or _Accept(transfer) {
+            // Ensure non-empty queue
+            assert(requests.size() > 0);
+
+            // Ensure non-null pointer
+            assert(requests.front() != NULL);
+
             id = requests.front()->args.sid;
             amount = requests.front()->args.amount;
 
@@ -78,8 +92,15 @@ FWATCard WATCardOffice::transfer(unsigned int sid, unsigned int amount, WATCard 
 }
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
+    // Ensure non-empty queue
+    assert(requests.size() > 0);
+
     // Get and pop the next queued job
     Job *j = requests.front();
+
+    // Ensure non-null pointer
+    assert(j != NULL);
+
     requests.pop();
 
     return j;

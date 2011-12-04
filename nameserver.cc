@@ -6,8 +6,9 @@
  * November 2011
  */
 
+#include <cassert>
 #include "nameserver.h"
-#include <iostream>
+
 using namespace std;
 
 NameServer::NameServer( Printer &prt, unsigned int numVMs, unsigned int sNum ) : prt(prt) {
@@ -24,12 +25,19 @@ NameServer::NameServer( Printer &prt, unsigned int numVMs, unsigned int sNum ) :
 NameServer::~NameServer() {}
 
 void NameServer::VMregister( VendingMachine *machine ) {
+    // Ensure non-null pointer
+    assert(machine != NULL);
+
     prt.print(Printer::NameServer, 'R', machines.size());
     machines.push_back(machine);
 }
 
-VendingMachine* NameServer::getMachine(unsigned int sid) { 
+VendingMachine *NameServer::getMachine(unsigned int sid) { 
     currStudent = sid;
+
+    // Ensure reasonable value
+    assert(nextMachine[sid] >= 0 && nextMachine[sid] < numVendingMachines);
+
     int next = nextMachine[sid];
     prt.print(Printer::NameServer, 'N', sid, next);
     prt.print(Printer::Student, sid, 'V', next);

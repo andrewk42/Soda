@@ -32,7 +32,14 @@
 #ifndef PLANT_H
 #define PLANT_H
 
+#include "printer.h"
+#include "nameserver.h"
+
 _Task BottlingPlant {
+    Printer &prt;
+    NameServer &ns;
+    unsigned num_machines, max_shipped, max_stock, delay;
+
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,

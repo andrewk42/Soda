@@ -35,7 +35,18 @@
 #ifndef TRUCK_H
 #define TRUCK_H
 
+#include "printer.h"
+#include "nameserver.h"
+#include "plant.h"
+
 _Task Truck {
+    Printer &prt;
+    NameServer &ns;
+    BottlingPlant &plt;
+    VendingMachine **machine_list;
+    unsigned int num_machines, max_stock, cargo[4];
+
+    bool driveOverCampus(int gasRemaining, int tireSize, int targetDeathCount);
     void main();
   public:
     Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
