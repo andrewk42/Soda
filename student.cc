@@ -35,12 +35,26 @@ void Student::main() {
   for (unsigned int i = 0; i < numPurchases; i++) {
     yield(mprng(1, 10));
     
-    try {
-      // Purchase soda. Blocks if no money on card.
-      //VendingMachine::Status status = vm->buy( flavour, *watcard() );
-      std::osacquire(std::cout) << (*watcard()).getBalance() << std::endl;
-    } catch (WATCardOffice::Lost) {
-      std::osacquire(std::cout) << "ohai" << std::endl;
+    for (;;) {
+        VendingMachine::Status status;
+        try {
+            status = vm->buy( flavour, *watcard() );
+        } catch (WATCardOffice::Lost lost) {
+            prt.print(Printer::Student, id, 'L');
+            delete card;
+            card = new WATCard();
+            watcard = office.create( id, (unsigned int)5, card );
+            continue; 
+        }
+        if (status == VendingMachine::BUY) {
+            prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
+            break;
+        } else if (status == VendingMachine::FUNDS) {
+            // transfer money.
+        } else if (status == VendingMachine::STOCK) {
+            vm = nameServer.getMachine(id);
+        }
     }
   }
+  prt.print(Printer::Student, id, 'F');
 }

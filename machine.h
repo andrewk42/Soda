@@ -47,7 +47,8 @@ _Task NameServer;
 _Task VendingMachine {
     Printer &prt;
     NameServer &nameserver;
-    unsigned int id, sodaCost, stockCount;
+    unsigned int id, sodaCost, maxStock;
+    int stockCount[4];
     void main();
   public:
     enum Flavours { PINK, ORGANGE, GREEN, BLUE }; 			// flavours of soda

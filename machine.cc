@@ -12,11 +12,26 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
                     unsigned int maxStockPerFlavour ) : prt(prt), nameserver(nameServer) {
     id = vmid;
     sodaCost = cost;
-    stockCount = maxStockPerFlavour;
+    maxStock = maxStockPerFlavour;
+
+    for (int i = 0; i < 4; i++) {
+        stockCount[i] = 20;
+    }
+
     nameserver.VMregister(this);
     prt.print(Printer::Vending, id, 'S', sodaCost);
 }
 
-VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours, WATCard&) { return BUY; }
+VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WATCard &watcard) {
+    if (watcard.getBalance() < sodaCost) {
+        return FUNDS;
+    } else if (stockCount[flavour] == 0) {
+        return STOCK;
+    } else {
+        watcard.withdraw(sodaCost);
+        stockCount[flavour]--;
+        return BUY; 
+    }
+}
 
 void VendingMachine::main() {}

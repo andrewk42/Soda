@@ -31,9 +31,9 @@ void NameServer::VMregister( VendingMachine *machine ) {
 VendingMachine* NameServer::getMachine(unsigned int sid) { 
     currStudent = sid;
     int next = nextMachine[sid];
-    prt.print(Printer::Student, sid, 'V', next);
     prt.print(Printer::NameServer, 'N', sid, next);
-    nextMachine[currStudent] = nextMachine[currStudent]++ % numVendingMachines;
+    prt.print(Printer::Student, sid, 'V', next);
+    nextMachine[currStudent] = (nextMachine[currStudent]+1) % numVendingMachines;
     return machines[next]; 
 }
 
