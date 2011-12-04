@@ -74,7 +74,8 @@ _Task WATCardOffice {
     };
 
     // Worker Task
-    _Task Courier { 
+    _Task Courier {
+        unsigned int id;
         Printer &prt;
         Bank &b;
         WATCardOffice &office;
@@ -82,7 +83,7 @@ _Task WATCardOffice {
 
         void main();
       public:
-        Courier(Printer &prt, Bank &b, WATCardOffice &office) : prt(prt), b(b), office(office) {}
+        Courier(unsigned int id, Printer &prt, Bank &b, WATCardOffice &office);
         ~Courier() {}
     };
 
@@ -100,7 +101,5 @@ _Task WATCardOffice {
     FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
     Job *requestWork();
 };
-
-
 
 #endif

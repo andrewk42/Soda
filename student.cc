@@ -10,6 +10,8 @@
 #include "mprng.h"
 #include "student.h"
 
+#include <iostream>
+
 extern MPRNG mprng;
 
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int studentId,
@@ -33,7 +35,12 @@ void Student::main() {
   for (unsigned int i = 0; i < numPurchases; i++) {
     yield(mprng(1, 10));
     
-    // Purchase soda. Blocks if no money on card.
-    VendingMachine::Status status = vm->buy( flavour, *watcard() );
+    try {
+      // Purchase soda. Blocks if no money on card.
+      //VendingMachine::Status status = vm->buy( flavour, *watcard() );
+      std::osacquire(std::cout) << (*watcard()).getBalance() << std::endl;
+    } catch (WATCardOffice::Lost) {
+      std::osacquire(std::cout) << "ohai" << std::endl;
+    }
   }
 }
