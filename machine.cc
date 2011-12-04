@@ -35,6 +35,16 @@ VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WAT
     }
 }
 
+unsigned int *VendingMachine::inventory() {
+    return stockCount;
+}
+
+void VendingMachine::restocked() {
+    for (int i = 0; i < 4; i++) {
+        assert(stockCount[i] <= maxStock);
+    }
+}
+
 _Nomutex unsigned int VendingMachine::cost() {
     return sodaCost;
 }
@@ -49,6 +59,8 @@ void VendingMachine::main() {
         _Accept(~VendingMachine) {
             break;
         } or _Accept(buy) {
+        } or _Accept(inventory) {
+            _Accept(restocked);
         }
     }
     prt.print(Printer::Vending, id, 'F');
