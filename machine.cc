@@ -8,8 +8,13 @@
 
 #include "machine.h"
 
-VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
-                    unsigned int maxStockPerFlavour ) {
+VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int vmid, unsigned int cost,
+                    unsigned int maxStockPerFlavour ) : prt(prt), nameserver(nameServer) {
+    id = vmid;
+    sodaCost = cost;
+    stockCount = maxStockPerFlavour;
+    nameserver.VMregister(this);
+    prt.print(Printer::Vending, id, 'S', sodaCost);
 }
 
 VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours, WATCard&) { return BUY; }

@@ -24,11 +24,11 @@ void Student::main() {
   prt.print(Printer::Student, id, 'S', flavour, numPurchases);
 	
   // Create watcard w/ $5 balance.
-  WATCard *card = new WATCard(5);
+  WATCard *card = new WATCard();
   FWATCard watcard = office.create( id, (unsigned int)5, card );
   
   // Obtain vending machine location from name server.
-  VendingMachine *vm = nameServer.getMachine( id );
+  VendingMachine *vm = nameServer.getMachine(id);
 
   for (unsigned int i = 0; i < numPurchases; i++) {
     yield(mprng(1, 10));

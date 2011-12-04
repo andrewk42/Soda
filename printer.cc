@@ -98,7 +98,8 @@ void Printer::print(Kind kind, unsigned int lid, char state, int value1, int val
 
 void Printer::realPrint(unsigned int id, char state, int value1, int value2) {
     // Print a line if this call is about to overwrite nonprinted values
-    if (buffer[id].state != '\0' && state != buffer[id].state) {
+    if (buffer[id].state != '\0' && (state != buffer[id].state ||
+        value1 != buffer[id].arg1 || value2 != buffer[id].arg2)) {
         flush();
     }
 

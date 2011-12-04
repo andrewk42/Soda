@@ -7,10 +7,45 @@
  */
 
 #include "nameserver.h"
+#include <iostream>
+using namespace std;
 
-NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ) {
+NameServer::NameServer( Printer &prt, unsigned int numVMs, unsigned int sNum ) : prt(prt) {
+    numVendingMachines = numVMs;
+    numStudents = sNum;
+
+    nextMachine = new int[numStudents];
+    for (unsigned int i = 0; i < numStudents; i++) {
+        nextMachine[i] = i;
+    }
+    prt.print(Printer::NameServer, 'S');
 }
 
-VendingMachine* NameServer::getMachine(unsigned int) { return NULL; }
+NameServer::~NameServer() {}
 
-void NameServer::main() {}
+void NameServer::VMregister( VendingMachine *machine ) {
+    prt.print(Printer::NameServer, 'R', machines.size());
+    machines.push_back(machine);
+}
+
+VendingMachine* NameServer::getMachine(unsigned int sid) { 
+    currStudent = sid;
+    int next = nextMachine[sid];
+    prt.print(Printer::Student, sid, 'V', next);
+    prt.print(Printer::NameServer, 'N', sid, next);
+    nextMachine[currStudent] = nextMachine[currStudent]++ % numVendingMachines;
+    return machines[next]; 
+}
+
+void NameServer::main() {
+    /*
+    for (;;) {
+        _Accept(~NameServer) 
+            break;
+        or _When (machines.size() != numVendingMachines) _Accept(VMregister) { }
+        or _When (machines.size() == numVendingMachines) _Accept(getMachine) { 
+            nextMachine[currStudent] = nextMachine[currStudent]++ % numVendingMachines;
+        }
+    }
+    */
+}

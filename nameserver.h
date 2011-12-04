@@ -32,15 +32,26 @@
 #define NAMESERVER_H
 
 #include <uC++.h>
-#include "machine.h"
+#include <vector>
 #include "printer.h"
+#include "machine.h"
 
 _Task VendingMachine;
 
 _Task NameServer {
+    Printer &prt;
+
+    // currStudent is the student that called getMachine.
+    unsigned int numVendingMachines, numStudents, currStudent;
+
+    // Used to keep track of which machine a student goes to next.
+    std::vector<VendingMachine*> machines;
+    int *nextMachine;
+
     void main();
   public:
     NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents );
+    ~NameServer();
     void VMregister( VendingMachine *vendingmachine );
     VendingMachine *getMachine( unsigned int id );
     VendingMachine **getMachineList();

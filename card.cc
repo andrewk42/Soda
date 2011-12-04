@@ -12,8 +12,6 @@ WATCard::WATCard() {
     balance = 0;
 }
 
-WATCard::WATCard(unsigned int test) {}
-
 void WATCard::deposit(unsigned int amount) {
     balance += amount;
 }

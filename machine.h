@@ -45,17 +45,20 @@
 _Task NameServer;
 
 _Task VendingMachine {
+    Printer &prt;
+    NameServer &nameserver;
+    unsigned int id, sodaCost, stockCount;
     void main();
   public:
-    enum Flavours { PINK, ORGANGE, GREEN, BLUE }; 			// flavours of soda (YOU DEFINE)
+    enum Flavours { PINK, ORGANGE, GREEN, BLUE }; 			// flavours of soda
     enum Status { BUY, STOCK, FUNDS };		// purchase status: successful buy, out of stock, insufficient funds
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
     Status buy( Flavours flavour, WATCard &card );
     unsigned int *inventory();
     void restocked();
-    //_Nomutex unsigned int cost();
-    //_Nomutex unsigned int getId();
+    _Nomutex unsigned int cost();
+    _Nomutex unsigned int getId();
 };
 
 
