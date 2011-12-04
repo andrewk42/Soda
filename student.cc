@@ -21,40 +21,40 @@ unsigned int max ) : prt(prt), nameServer(nameServer), office(cardOffice) {
 }
 
 void Student::main() {
-  unsigned int numPurchases = mprng(1, maxPurchases);
-  VendingMachine::Flavours flavour = (VendingMachine::Flavours)mprng(3);
-  prt.print(Printer::Student, id, 'S', flavour, numPurchases);
+    unsigned int numPurchases = mprng(1, maxPurchases);
+    VendingMachine::Flavours flavour = (VendingMachine::Flavours)mprng(3);
+    prt.print(Printer::Student, id, 'S', flavour, numPurchases);
 	
-  // Create watcard w/ $5 balance.
-  WATCard *card = new WATCard();
-  FWATCard watcard = office.create( id, (unsigned int)5, card );
+    // Create watcard w/ $5 balance.
+    WATCard *card = new WATCard();
+    FWATCard watcard = office.create( id, (unsigned int)5, card );
   
-  // Obtain vending machine location from name server.
-  VendingMachine *vm = nameServer.getMachine(id);
+    // Obtain vending machine location from name server.
+    VendingMachine *vm = nameServer.getMachine(id);
 
-  for (unsigned int i = 0; i < numPurchases; i++) {
-    yield(mprng(1, 10));
+    for (unsigned int i = 0; i < numPurchases; i++) {
+        yield(mprng(1, 10));
     
-    for (;;) {
-        VendingMachine::Status status;
-        try {
-            status = vm->buy( flavour, *watcard() );
-        } catch (WATCardOffice::Lost lost) {
-            prt.print(Printer::Student, id, 'L');
-            delete card;
-            card = new WATCard();
-            watcard = office.create( id, (unsigned int)5, card );
-            continue; 
+        for (;;) {
+            VendingMachine::Status status;
+            try {
+                status = vm->buy( flavour, *watcard() );
+            } catch (WATCardOffice::Lost lost) {
+                prt.print(Printer::Student, id, 'L');
+                delete card;
+                card = new WATCard();
+                watcard = office.create( id, (unsigned int)5, card );
+                continue; 
+            }
+            if (status == VendingMachine::BUY) {
+                prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
+                break;
+            } else if (status == VendingMachine::FUNDS) {
+                // transfer money.
+            } else if (status == VendingMachine::STOCK) {
+                vm = nameServer.getMachine(id);
+            }
         }
-        if (status == VendingMachine::BUY) {
-            prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
-            break;
-        } else if (status == VendingMachine::FUNDS) {
-            // transfer money.
-        } else if (status == VendingMachine::STOCK) {
-            vm = nameServer.getMachine(id);
-        }
-    }
   }
   prt.print(Printer::Student, id, 'F');
 }

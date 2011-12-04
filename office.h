@@ -92,6 +92,7 @@ _Task WATCardOffice {
     std::vector<Courier*> couriers;
     std::queue<Job*> requests;
 
+    _Nomutex FWATCard makeJob(unsigned int sid, unsigned int amount, WATCard *card);
     void main();
   public:
     _Event Lost {};
