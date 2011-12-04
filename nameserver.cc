@@ -24,7 +24,10 @@ NameServer::NameServer( Printer &prt, unsigned int numVMs, unsigned int sNum ) :
     }
 }
 
-NameServer::~NameServer() {}
+NameServer::~NameServer() {
+    delete[] machines;
+    delete[] nextMachine;
+}
 
 void NameServer::VMregister( VendingMachine *machine ) {
     // Ensure non-null pointer
