@@ -31,6 +31,16 @@
  * T        transfer rendezvous complete    student id, transfer amount
  * F        finished
  *
+ *   If a courier has lost a student’s WATCard during a transfer (see WATCardOffice::Courier), the
+ * exception WATCardOffice::Lost is raised when the future value is accessed. In this case, the student must delete
+ * the old WATCard and create a new WATCard via the WATCardOffice with a $5 balance. Note, a courier can lose
+ * a student’s WATCard during the transfer for the new create so this issue can occur repeatedly.
+ *   When a WATCard is created it has a $0 balance. The courier calls WATCard::deposit after a funds transfer.
+ * The typedef FWATCard is a future pointer to a student’s WATCard for synchronizing access to the WATCard between
+ * the student and the courier.
+ *   A courier calls Bank::withdraw to transfer money on behalf of the WATCard office for a specific student. The
+ * courier waits until enough money has been deposited, which may require multiple deposits.
+ *
  * A courier prints the following information:
  * State    Meaning                         Additional Information
  * -----    -------                         ----------------------
@@ -43,26 +53,49 @@
 #ifndef OFFICE_H
 #define OFFICE_H
 
+#include <vector>
+#include <queue>
 #include "card.h"
 #include "printer.h"
 #include "bank.h"
 
 _Task WATCardOffice {
     struct Job {				    // marshalled arguments and return future
-        struct Args{};
+        struct Args {
+            unsigned int sid, amount;
+            WATCard *c;
+
+            Args(unsigned int sid, unsigned int amount, WATCard *c) : sid(sid), amount(amount), c(c) {}
+        };
+
         Args args;				    // call arguments (YOU DEFINE "Args")
         FWATCard result;			// return future
         Job( Args args ) : args( args ) {}
     };
-    _Task Courier { };			// communicates with bank
+
+    // Worker Task
+    _Task Courier { 
+        Printer &prt;
+        Bank &b;
+        WATCardOffice &office;
+        Job *j;
+
+        void main();
+      public:
+        Courier(Printer &prt, Bank &b, WATCardOffice &office) : prt(prt), b(b), office(office) {}
+        ~Courier() {}
+    };
+
     Printer &prt;
     Bank &b;
-    unsigned int num_couriers;
+    std::vector<Courier*> couriers;
+    std::queue<Job*> requests;
 
     void main();
   public:
     _Event Lost {};
     WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers );
+    ~WATCardOffice();
     FWATCard create( unsigned int sid, unsigned int amount, WATCard *&card );
     FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
     Job *requestWork();

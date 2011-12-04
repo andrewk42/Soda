@@ -11,6 +11,7 @@
 
 Bank::Bank(unsigned int numStudents) : num_students(numStudents) {
     accounts = new unsigned int[num_students];
+    withdraw_queues = new uCondition[num_students];
 
     for (unsigned int i = 0; i < num_students; i++) {
         accounts[i] = 0;
@@ -23,9 +24,14 @@ Bank::~Bank() {
 
 void Bank::deposit(unsigned int id, unsigned int amount) {
     accounts[id] += amount;
+    withdraw_queues[id].signal();
 }
 
-void withdraw(unsigned int id, unsigned int amount) {
-    // Something involving futures?
-    // Probably internal scheduling, since we don't know if we want to wait until we see accounts[id]
+void Bank::withdraw(unsigned int id, unsigned int amount) {
+    // Keep waiting until there is enough in the account to withdraw amount
+    while (accounts[id] < amount) {
+        withdraw_queues[id].wait();
+    }
+
+    accounts[id] -= amount;
 }
