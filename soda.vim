@@ -29,3 +29,5 @@
 :tabnew PRNG.h
 :tabnew mprng.h
 :tabnew input.txt
+:tabnew README
+:tabnew soda.testtxt
