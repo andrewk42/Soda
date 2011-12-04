@@ -19,8 +19,9 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
     }
 
     nameserver.VMregister(this);
-    prt.print(Printer::Vending, id, 'S', sodaCost);
 }
+
+VendingMachine::~VendingMachine() {}
 
 VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WATCard &watcard) {
     if (watcard.getBalance() < sodaCost) {
@@ -34,4 +35,13 @@ VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WAT
     }
 }
 
-void VendingMachine::main() {}
+void VendingMachine::main() {
+    prt.print(Printer::Vending, id, 'S', sodaCost);
+    for (;;) {
+        _Accept(~VendingMachine) {
+            break;
+        } or _Accept(buy) {
+        }
+    }
+    prt.print(Printer::Vending, id, 'F');
+}
