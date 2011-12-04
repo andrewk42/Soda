@@ -55,7 +55,6 @@ void NameServer::main() {
         } or _When (currMachine != numVendingMachines) _Accept(VMregister) {
         } or _When (currMachine == numVendingMachines) _Accept(getMachine) {
             prt.print(Printer::NameServer, 'N', currStudent, next);
-            prt.print(Printer::Student, currStudent, 'V', next);
             nextMachine[currStudent] = (nextMachine[currStudent]+1) % numVendingMachines;
         }
     }

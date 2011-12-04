@@ -35,6 +35,14 @@ VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WAT
     }
 }
 
+_Nomutex unsigned int VendingMachine::cost() {
+    return sodaCost;
+}
+
+_Nomutex unsigned int VendingMachine::getId() {
+    return id;
+}
+
 void VendingMachine::main() {
     prt.print(Printer::Vending, id, 'S', sodaCost);
     for (;;) {

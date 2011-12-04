@@ -31,6 +31,7 @@ void Student::main() {
   
     // Obtain vending machine location from name server.
     VendingMachine *vm = nameServer.getMachine(id);
+    prt.print(Printer::Student, id, 'V', vm->getId());
 
     for (unsigned int i = 0; i < numPurchases; i++) {
         yield(mprng(1, 10));
@@ -50,7 +51,7 @@ void Student::main() {
                 prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
                 break;
             } else if (status == VendingMachine::FUNDS) {
-                //watcard = office.transfer( id, (unsigned int)5+, card);
+                watcard = office.transfer( id, ((unsigned int)5 + vm->cost()), card);
             } else if (status == VendingMachine::STOCK) {
                 vm = nameServer.getMachine(id);
             }
