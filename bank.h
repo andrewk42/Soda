@@ -19,6 +19,7 @@
 _Monitor Bank {
     unsigned int num_students;
     unsigned int *accounts;
+    uCondition *withdraw_queues;
   public:
     Bank( unsigned int numStudents );
     ~Bank();
