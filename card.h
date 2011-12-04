@@ -25,6 +25,7 @@ class WATCard {
     unsigned int balance; // In dollars
   public:
     WATCard();
+    WATCard(unsigned int test);
     void deposit( unsigned int amount );
     void withdraw( unsigned int amount );
     unsigned int getBalance();

@@ -6,32 +6,34 @@
  * November 2011
  */
 
+#include <uC++.h>
+#include "mprng.h"
 #include "student.h"
 
+extern MPRNG mprng;
+
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int studentId,
-unsigned int max ) : prt(prt), nameServer(nameServer), cardOffice(cardOffice) {
+unsigned int max ) : prt(prt), nameServer(nameServer), office(cardOffice) {
 	id = studentId;
 	maxPurchases = max;
 }
 
 void Student::main() {
-  unsigned int numPurchases, flavour;
-	
   unsigned int numPurchases = mprng(1, maxPurchases);
-  unsigned int flavour = mprng(3);
+  VendingMachine::Flavours flavour = (VendingMachine::Flavours)mprng(3);
+  prt.print(Printer::Student, id, 'S', flavour, numPurchases);
 	
   // Create watcard w/ $5 balance.
-  WATCard watcard = new WATCard();
-  FWATCard watcard = cardOffice.create( id, 5, WATCard *card );
+  WATCard *card = new WATCard(5);
+  FWATCard watcard = office.create( id, (unsigned int)5, card );
   
   // Obtain vending machine location from name server.
   VendingMachine *vm = nameServer.getMachine( id );
 
-  for (int i = 0; i < numPurchases; i++) {
+  for (unsigned int i = 0; i < numPurchases; i++) {
     yield(mprng(1, 10));
     
     // Purchase soda. Blocks if no money on card.
-    Status vm.buy( flavour, watcard );
-
+    VendingMachine::Status status = vm->buy( flavour, *watcard() );
   }
 }
