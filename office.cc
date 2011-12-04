@@ -28,20 +28,32 @@ WATCardOffice::~WATCardOffice() {
 }
 
 void WATCardOffice::main() {
+    unsigned int id, amount;
+
     prt.print(Printer::WATCardOffice, 'S');
 
     for (;;) {
         _Accept(~WATCardOffice) {
             break;
         } or _When (!requests.empty()) _Accept(requestWork) {
+            prt.print(Printer::WATCardOffice, 'W');
         } or _Accept(create) {
+            id = requests.front()->args.sid;
+            amount = requests.front()->args.amount;
+
+            prt.print(Printer::WATCardOffice, 'C', id, amount);
+        } or _Accept(transfer) {
+            id = requests.front()->args.sid;
+            amount = requests.front()->args.amount;
+
+            prt.print(Printer::WATCardOffice, 'T', id, amount);
         }
     }
 
     prt.print(Printer::WATCardOffice, 'F');
 }
 
-FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount, WATCard *&card) {
+FWATCard WATCardOffice::makeJob(unsigned int sid, unsigned int amount, WATCard *card) {
     // Package these args for the job
     Job::Args args(sid, amount, card);
 
@@ -55,8 +67,14 @@ FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount, WATCard *&
     return j->result;
 }
 
+FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount, WATCard *&card) {
+    /* WHAT AM I SUPPOSED TO DO TO *card ??? */
+
+    return makeJob(sid, amount, card);
+}
+
 FWATCard WATCardOffice::transfer(unsigned int sid, unsigned int amount, WATCard *card) {
-    return NULL;
+    return makeJob(sid, amount, card);
 }
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
@@ -86,7 +104,7 @@ void WATCardOffice::Courier::main() {
             // Get the next queued job
             j = office.requestWork();
 
-            prt.print(Printer::Courier, id, 't');
+            prt.print(Printer::Courier, id, 't', j->args.sid, j->args.amount);
 
             // Withdraw money from the bank, may block here
             b.withdraw(j->args.sid, j->args.amount);
@@ -103,7 +121,7 @@ void WATCardOffice::Courier::main() {
                 j->result.delivery(j->args.c);
             }
 
-            prt.print(Printer::Courier, id, 'T');
+            prt.print(Printer::Courier, id, 'T', j->args.sid, j->args.amount);
 
             delete j;
         }

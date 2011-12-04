@@ -37,10 +37,8 @@ void Student::main() {
     
     try {
       // Purchase soda. Blocks if no money on card.
-      //VendingMachine::Status status = vm->buy( flavour, *watcard() );
-      std::osacquire(std::cout) << (*watcard()).getBalance() << std::endl;
+      VendingMachine::Status status = vm->buy( flavour, *watcard() );
     } catch (WATCardOffice::Lost) {
-      std::osacquire(std::cout) << "ohai" << std::endl;
     }
   }
 }
