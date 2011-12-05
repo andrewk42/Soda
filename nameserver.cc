@@ -8,6 +8,7 @@
 
 #include <cassert>
 #include "nameserver.h"
+#include <iostream>
 
 using namespace std;
 
@@ -55,6 +56,7 @@ void NameServer::main() {
     for (;;) {
         _Accept(~NameServer) {
             break;
+        } or _Accept(getMachineList) {
         } or _When (currMachine != numVendingMachines) _Accept(VMregister) {
         } or _When (currMachine == numVendingMachines) _Accept(getMachine) {
             prt.print(Printer::NameServer, 'N', currStudent, next);

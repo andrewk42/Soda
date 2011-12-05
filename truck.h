@@ -48,7 +48,7 @@ _Task Truck {
     VendingMachine **machine_list;
     unsigned int num_machines, max_stock, cargo[4];
 
-    bool driveOverCampus(int gasRemaining, int tireSize, int targetDeathCount);
+    //bool driveOverCampus(int gasRemaining, int tireSize, int targetDeathCount);
     void main();
   public:
     Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
