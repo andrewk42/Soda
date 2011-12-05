@@ -39,6 +39,8 @@
 #include "nameserver.h"
 #include "plant.h"
 
+_Task BottlingPlant;
+
 _Task Truck {
     Printer &prt;
     NameServer &ns;

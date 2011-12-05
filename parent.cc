@@ -39,7 +39,7 @@ void Parent::main() {
 
             // Deposit gift with student
             b.deposit(child, gift);
-            //prt.print(Printer::Parent, 'D', child, gift);
+            prt.print(Printer::Parent, 'D', child, gift);
         }
     }
 

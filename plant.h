@@ -34,17 +34,22 @@
 
 #include "printer.h"
 #include "nameserver.h"
+#include "truck.h"
+
+_Task Truck;
 
 _Task BottlingPlant {
     Printer &prt;
     NameServer &ns;
-    unsigned num_machines, max_shipped, max_stock, delay;
-
+    Truck *truck;
+    unsigned int num_machines, max_shipped, max_stock, delay;
+    unsigned int stock[4];
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
                  unsigned int timeBetweenShipments );
+    ~BottlingPlant();
     bool getShipment( unsigned int cargo[] );
 };
 
