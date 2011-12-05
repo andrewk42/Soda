@@ -16,7 +16,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
     maxStock = maxStockPerFlavour;
 
     for (int i = 0; i < 4; i++) {
-        stockCount[i] = 20;
+        stockCount[i] = 0;
     }
 
     nameserver.VMregister(this);

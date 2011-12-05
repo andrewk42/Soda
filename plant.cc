@@ -20,10 +20,20 @@ BottlingPlant::BottlingPlant(Printer &prt, NameServer &nameServer, unsigned int 
 
     truck = new Truck( prt, ns, *this, num_machines, max_stock );
 
-    stock[0] = stock[1] = stock[2] = stock[3] = 0;   
+    stock[0] = stock[1] = stock[2] = stock[3] = 0;
+
+    closing = false;
 }
 
-BottlingPlant::~BottlingPlant() {}
+BottlingPlant::~BottlingPlant() {
+    // Set signal for Truck
+    closing = true;
+
+    prt.print(Printer::BottlingPlant, 'X');
+
+    // Wait for Truck to crash
+    delete truck;
+}
 
 bool BottlingPlant::getShipment(unsigned int cargo[]) {
     cargo[0] = stock[0];
@@ -31,7 +41,7 @@ bool BottlingPlant::getShipment(unsigned int cargo[]) {
     cargo[2] = stock[2];
     cargo[3] = stock[3];
 
-    return false;
+    return closing;
 }
 
 void BottlingPlant::main() {

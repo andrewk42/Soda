@@ -44,6 +44,7 @@ _Task BottlingPlant {
     Truck *truck;
     unsigned int num_machines, max_shipped, max_stock, delay;
     unsigned int stock[4];
+    bool closing;
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
