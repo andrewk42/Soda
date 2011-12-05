@@ -6,11 +6,10 @@
  * November 2011
  */
 
+#include <cassert>
 #include <uC++.h>
 #include "mprng.h"
 #include "student.h"
-
-#include <iostream>
 
 extern MPRNG mprng;
 
@@ -31,6 +30,10 @@ void Student::main() {
   
     // Obtain vending machine location from name server.
     VendingMachine *vm = nameServer.getMachine(id);
+
+    // Ensure valid pointer
+    assert(vm != NULL);
+
     prt.print(Printer::Student, id, 'V', vm->getId());
 
     for (unsigned int i = 0; i < numPurchases; i++) {
@@ -42,10 +45,14 @@ void Student::main() {
                 status = vm->buy( flavour, *watcard() );
             } catch (WATCardOffice::Lost lost) {
                 prt.print(Printer::Student, id, 'L');
+
                 delete card;
+                card = NULL;
+                
                 card = new WATCard();
                 watcard = office.create( id, (unsigned int)5, card );
-                continue; 
+
+                continue;
             }
             if (status == VendingMachine::BUY) {
                 prt.print(Printer::Student, id, 'B', (*watcard()).getBalance());
@@ -54,9 +61,14 @@ void Student::main() {
                 watcard = office.transfer( id, ((unsigned int)5 + vm->cost()), card);
             } else if (status == VendingMachine::STOCK) {
                 vm = nameServer.getMachine(id);
+
+                // Ensure valid pointer
+                assert(vm != NULL);
             }
         }
-  }
-  delete card;
-  prt.print(Printer::Student, id, 'F');
+    }
+    delete card;
+    card = NULL;
+
+    prt.print(Printer::Student, id, 'F');
 }

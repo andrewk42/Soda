@@ -1,6 +1,27 @@
 --Soda Readme--
 
 Dec 2 9:50pm: Started the project
+-------------
 
-Dec 4 5:50pm: Most inital design is complete, beginning to think about tests...
--
+Dec 4 5:50pm: Most inital design is complete, beginning to think about testing...
+-------------
+-Pointers: Want to avoid null pointer errors
+    -> Couple all non-task deletions with := NULL
+        + not done in uMain::main since these pointers are not reused
+        + done in Student::main when deleting a WATCard
+        + done in Courier::main when deleting a Job
+        + not done within object destructors since these pointers are not reused
+    -> perform assert( != NULL) before all pointer references
+        + done in Student::main when obtaining vending machines
+        + done in WATCardOffice::main when referencing the next queued Job*
+        + done in WATCardOffice::requestWork when retrieving the next queued Job*
+        + done in Courier::main when referencing the returned Job*
+        + done in NameServer::VMRegister before registering a VendingMachine*
+        + done in Truck::main when retrieving the machine list
+        + done in Truck::main when retrieving a machine's inventory
+
+-Memory Management: Want to avoid memory leaks
+    -> Check if runtime errors?
+
+-Printer tests
+    

@@ -6,6 +6,7 @@
  * November 2011
  */
 
+#include <cassert>
 #include <uC++.h>
 #include "truck.h"
 #include "mprng.h"
@@ -17,13 +18,17 @@ Truck::Truck(Printer &prt, NameServer &nameServer, BottlingPlant &plant, unsigne
     num_machines(numVendingMachines), max_stock(maxStockPerFlavour) {}
 
 void Truck::main() {
-    unsigned int i, *inventory, j, bottles_missing, not_replenished = 0;
+    unsigned int i, *inventory = NULL, j, bottles_missing, not_replenished = 0;
     bool unsuccessful = false;
 
     prt.print(Printer::Truck, 'S');
 
     // Obtain vending machine locations
     machine_list = ns.getMachineList();
+
+    // Ensure valid machine list
+    assert(machine_list != NULL);
+    for (i = 0; i < num_machines; i++) assert(machine_list[i] != NULL);
 
     MAIN: for (;;) {
         // Go to Timmies - buy 1 extra large double double, 1 large triple triple
@@ -45,6 +50,9 @@ void Truck::main() {
 
             // Get the current machine's inventory
             inventory = machine_list[i]->inventory();
+
+            // Ensure valid pointer
+            assert(inventory != NULL);
 
             // For each soda flavour in this machine
             for (j = 0; j < 4; j++) {

@@ -34,6 +34,7 @@ WATCardOffice::~WATCardOffice() {
 
         requests.push(j);
 
+        // Let/waitfor a Courier take this job
         _Accept(requestWork);
     }
 
@@ -136,6 +137,9 @@ void WATCardOffice::Courier::main() {
         // Get the next queued job
         j = office.requestWork();
 
+        // Ensure non-null pointer
+        assert(j != NULL);
+
         // Detect signal from office to break
         if (j->terminate) break;
 
@@ -159,10 +163,12 @@ void WATCardOffice::Courier::main() {
         prt.print(Printer::Courier, id, 'T', j->args.sid, j->args.amount);
 
         delete j;
+        j = NULL;
     }
 
     // Delete the terminate job
     delete j;
+    j = NULL;
 
     // Print finish msg
     prt.print(Printer::Courier, id, 'F');

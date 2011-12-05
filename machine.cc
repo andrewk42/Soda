@@ -6,6 +6,7 @@
  * November 2011
  */
 
+#include <cassert>
 #include "machine.h"
 
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int vmid, unsigned int cost,

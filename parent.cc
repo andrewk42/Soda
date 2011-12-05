@@ -24,9 +24,9 @@ Parent::~Parent() {}
 void Parent::main() {
     unsigned int child, gift;
 
-    for (;;) {
+    MAIN: for (;;) {
         _Accept(~Parent) {
-            break;
+            break MAIN;
         } else {
             // Non-random delay before transferring a gift
             yield(delay);
