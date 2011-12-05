@@ -31,11 +31,13 @@ VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WAT
     } else {
         watcard.withdraw(sodaCost);
         stockCount[flavour]--;
-        return BUY; 
+        prt.print(Printer::Vending, id, 'B', flavour, stockCount[flavour]);
+        return BUY;
     }
 }
 
 unsigned int *VendingMachine::inventory() {
+    prt.print(Printer::Vending, id, 'r');
     return stockCount;
 }
 
@@ -43,6 +45,7 @@ void VendingMachine::restocked() {
     for (int i = 0; i < 4; i++) {
         assert(stockCount[i] <= maxStock);
     }
+    prt.print(Printer::Vending, id, 'R');
 }
 
 _Nomutex unsigned int VendingMachine::cost() {

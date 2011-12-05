@@ -129,7 +129,8 @@ void uMain::main() {
     }
 
     // Create the Plant (the plant creates the Truck)
-
+    BottlingPlant *plant = new BottlingPlant(*prt, *nameServer, cfg.numVendingMachines,
+        cfg.maxShippedPerFlavour, cfg.maxStockPerFlavour, cfg.timeBetweenShipments);
 
     // Create the Students
     vector<Student*> students;
@@ -144,7 +145,7 @@ void uMain::main() {
     }
 
     // Delete the Plant
-
+    delete plant;
 
     // Delete the Machines
     for (unsigned int i = 0; i < machines.size(); i++) {
