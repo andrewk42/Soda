@@ -29,7 +29,8 @@ BottlingPlant::~BottlingPlant() {
     // Set signal for Truck
     closing = true;
 
-    prt.print(Printer::BottlingPlant, 'X');
+    // Let the truck call getShipment one more time
+    _Accept(getShipment);
 
     // Wait for Truck to crash
     delete truck;
@@ -46,21 +47,33 @@ bool BottlingPlant::getShipment(unsigned int cargo[]) {
 
 void BottlingPlant::main() {
     prt.print(Printer::BottlingPlant, 'S');
+
     for (;;) {
-        int total = 0;
-        for (unsigned int i = 0; i < max_shipped; i++) {
-            int newStock = mprng(max_shipped);
-            stock[i] += newStock;
-            total += newStock;
-        }
-        prt.print(Printer::BottlingPlant, 'G', total);
-        yield(delay);
+        // Either terminate or begin a production run
         _Accept(~BottlingPlant) {
             break;
-        } or _Accept(getShipment) {
+        } else {
+            // Simulate generation time
+            yield(delay);
+
+            int total = 0;
+
+            // Generate new stock of each flavour
+            for (unsigned int i = 0; i < 4; i++) {
+                int newStock = mprng(max_shipped);
+                stock[i] += newStock;
+                total += newStock;
+            }
+
+            prt.print(Printer::BottlingPlant, 'G', total);
+
+            // Wait for the Truck to pickup this stock
+            _Accept(getShipment);
+
             stock[0] = stock[1] = stock[2] = stock[3] = 0;
             prt.print(Printer::BottlingPlant, 'P');
         }
     }
+
     prt.print(Printer::BottlingPlant, 'F');
 }
