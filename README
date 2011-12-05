@@ -25,3 +25,10 @@ Dec 4 5:50pm: Most inital design is complete, beginning to think about testing..
 
 -Printer tests
     
+-Random tests
+    - For every B in student, there is a matching B at one of the vending machines
+        - check @ correct vending machine
+        - check student's fav flavour is the one at B of vending machine
+        - there are as many Bs in each student as stated in S
+
+    - Balances for students are decremented correctly on purchase
