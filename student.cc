@@ -61,6 +61,7 @@ void Student::main() {
                 watcard = office.transfer( id, ((unsigned int)5 + vm->cost()), card);
             } else if (status == VendingMachine::STOCK) {
                 vm = nameServer.getMachine(id);
+                prt.print(Printer::Student, id, 'V', vm->getId());
 
                 // Ensure valid pointer
                 assert(vm != NULL);

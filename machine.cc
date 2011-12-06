@@ -25,11 +25,10 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 VendingMachine::~VendingMachine() {}
 
 VendingMachine::Status VendingMachine::buy(VendingMachine::Flavours flavour, WATCard &watcard) {
-    
-    if (stockCount[flavour] == 0) {
-        return STOCK;
-    } else if (watcard.getBalance() < sodaCost) {
+    if (watcard.getBalance() < sodaCost) {
         return FUNDS;
+    } else if (stockCount[flavour] == 0) {
+        return STOCK;
     } else {
         watcard.withdraw(sodaCost);
         stockCount[flavour]--;
